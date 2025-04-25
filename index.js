@@ -76,12 +76,12 @@ client.on('messageCreate', async (message) => {
 
   // !play, !play1-5
   const soundCommands = {
-    '!play': 'creamnarak.mp3',
-    '!play1': 'chacrem2.mp3',
-    '!play2': 'chacrem3.mp3',
-    '!play3': 'ew1.mp3',
-    '!play4': 'ew2.mp3',
-    '!play5': 'ew3.mp3',
+    '!play': 'https://github.com/Fuji-PG/Bot_discord_chacrem/releases/download/music/creamnarak.mp3',
+    '!play1': 'https://github.com/Fuji-PG/Bot_discord_chacrem/releases/download/music/chacrem2.mp3',
+    '!play2': 'https://github.com/Fuji-PG/Bot_discord_chacrem/releases/download/music/chacrem3.mp3',
+    '!play3': 'https://github.com/Fuji-PG/Bot_discord_chacrem/releases/download/music/ew1.mp3',
+    '!play4': 'https://github.com/Fuji-PG/Bot_discord_chacrem/releases/download/music/ew2.mp3',
+    '!play5': 'https://github.com/Fuji-PG/Bot_discord_chacrem/releases/download/music/ew3.mp3',
   };
 
   if (soundCommands[message.content]) {

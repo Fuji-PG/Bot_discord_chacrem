@@ -1,12 +1,19 @@
 const { createAudioResource, StreamType } = require('@discordjs/voice');
 const prism = require('prism-media');
-const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('ffmpeg-static');
+const https = require('https');
 
-ffmpeg.setFfmpegPath(ffmpegPath); // บอก path ของ ffmpeg-static ให้ fluent-ffmpeg รู้
+function createAudioResourceWithVolume(urlOrPath, volume = 1.0) {
+  const isRemote = urlOrPath.startsWith('http');
 
-function createAudioResourceWithVolume(filePath, volume = 1.0) {
-  const ffmpegStream = ffmpeg(filePath)
+  const inputStream = isRemote
+    ? https.get(urlOrPath, (res) => res)
+    : require('fs').createReadStream(urlOrPath);
+
+  const ffmpeg = require('fluent-ffmpeg');
+  const ffmpegPath = require('ffmpeg-static');
+  ffmpeg.setFfmpegPath(ffmpegPath);
+
+  const ffmpegStream = ffmpeg(inputStream)
     .audioFilters(`volume=${volume}`)
     .format('s16le')
     .audioFrequency(48000)
@@ -16,9 +23,7 @@ function createAudioResourceWithVolume(filePath, volume = 1.0) {
 
   const opusStream = ffmpegStream.pipe(new prism.opus.Encoder({ rate: 48000, channels: 2, frameSize: 960 }));
 
-  return createAudioResource(opusStream, {
-    inputType: StreamType.Opus,
-  });
+  return createAudioResource(opusStream, { inputType: StreamType.Opus });
 }
 
 module.exports = { createAudioResourceWithVolume };
